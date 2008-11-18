@@ -12,7 +12,7 @@ class git {
   file { "/usr/local/src": ensure => directory }
 
   exec { "wget http://kernel.org/pub/software/scm/git/git-$version.tar.gz":
-      cwd       => "/usr/local/src",
+      cwd    => "/usr/local/src",
       source => "puppet://puppet/dist/packages/git-$version.tar.gz",
       alias  => "download-git-tgz",
       before => Exec["untar-git-source"]
