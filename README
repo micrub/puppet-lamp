@@ -1,0 +1,107 @@
+# Build your slice
+# Login to your slice as root
+ssh root@173.55.555.55
+
+#Change your root password
+passwd
+
+cd /tmp
+
+#install ruby
+yum install -y ruby ruby-devel ruby-libs ruby-rdoc ruby-ri
+
+#install rubygems
+wget http://rubyforge.org/frs/download.php/45905/rubygems-1.3.1.tgz
+tar xfz rubygems-*
+cd rubygems-*
+sudo ruby setup.rb
+cd ..
+
+#install puppet
+gem install facter puppet
+
+#setup puppet dir
+mkdir /var/puppet
+
+#download puppet config
+
+puppet /etc/puppet/manifests/site.pp
+
+#convert the rest of this to puppet config
+
+#add users
+adduser dstrojny
+
+#change passwords
+passwd dstrojny 
+
+#if you want to generate random, unguessable passwords on the fly instead
+head -c 8 /dev/random | uuencode -m - | tail -n 2 | head -n 1 | passwd --stdin dstrojny
+
+#add user to the wheel group
+usermod -a -G wheel dstrojny
+
+#run visudo to add the wheel group to the sudoers file
+#scroll down and remove the comment from this line
+%wheel  ALL=(ALL)       ALL
+
+#copy the ssh keys for the appropriate users to their home directories
+scp ~/.ssh/id_rsa.pub dstrojny@123.45.67.890:/home/dstrojny/
+
+#create the .ssh directory and then move your public key into it's authorized_keys file
+mkdir /home/dstrojny/.ssh
+mv /home/dstrojny/id_rsa.pub /home/demo/.ssh/authorized_keys
+
+#set correct permissions on the keys
+chown -R dstrojny:dstrojny /home/dstrojny/.ssh
+chmod 700 /home/dstrojny/.ssh
+chmod 600 /home/dstrojny/.ssh/authorized_keys
+
+#use vi to add some security measures, i to enter include mode, esc to exit, :wq to exit
+vi /etc/ssh/sshd_config
+
+#change the port
+port 10056
+
+#disable root logins
+PermitRootLogin no
+
+#disable logging in by password
+PasswordAuthentication no
+
+#install iptables
+yum install iptables
+
+#configure iptables
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A INPUT -i ! lo -d 127.0.0.0/8 -j REJECT
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A OUTPUT -j ACCEPT
+iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+iptables -A INPUT -p tcp -m state --state NEW --dport 10056 -j ACCEPT
+iptables -A INPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT
+iptables -A INPUT -j REJECT
+iptables -A FORWARD -j REJECT
+
+#ensure rules are loaded on reboots
+service iptables save
+
+#restart ssh
+/etc/init.d/sshd reload
+
+#run an update
+yum update
+
+#install screen
+yum install screen
+
+#install mysql
+yum install mysql
+yum install mysql-devel
+yum install mysql-server
+
+#install apache
+yum install httpd
+
+#install php
