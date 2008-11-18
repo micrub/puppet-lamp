@@ -5,22 +5,27 @@ class git {
   package { "curl-devel": ensure => installed }
   package { "expat-devel": ensure => installed }
   package { "gettext-devel": ensure => installed }
+  package { "wget": ensure => installed }
 
   $version = '1.6.0.4'
-  
+
   file { "/usr/local/src": ensure => directory }
-  file { "/usr/local/src/git-$version.tar.gz":
+
+  exec { "wget http://kernel.org/pub/software/scm/git/git-$version.tar.gz":
+      cwd       => "/usr/local/src",
       source => "puppet://puppet/dist/packages/git-$version.tar.gz",
-      alias  => "git-source-tgz",
+      alias  => "download-git-tgz",
       before => Exec["untar-git-source"]
   }
+
   exec { "tar xzf git-$version.tar.gz":
       cwd       => "/usr/local/src",
       creates   => "/usr/local/src/git-$version",
       alias     => "untar-git-source",
-      subscribe => File["git-source-tgz"],
+      subscribe => File["download-git-tgz"],
       before    => Exec["make install"]
   }
+
   exec { "make prefix=/usr all && make prefix=/usr install":
       cwd     => "/usr/local/src/git-$version",
       alias   => "make install",
