@@ -3,5 +3,8 @@ file { "/etc/sudoers":
 }
 node default {
   include build,
-          git
+          git,
+          apache,
+          mysql,
+          php
 }
