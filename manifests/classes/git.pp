@@ -11,26 +11,26 @@ class git {
 
   file { "/usr/local/src": ensure => directory }
 
-  exec { "wget http://kernel.org/pub/software/scm/git/git-$version.tar.gz":
-      cwd    => "/usr/local/src",
-      alias  => "download-git-tgz",
-      before => Exec["untar-git-source"],
-      require => [Package[wget]]
+  exec { "download-git-tgz":
+      cwd       => "/usr/local/src",
+      command   => "/usr/binwget http://kernel.org/pub/software/scm/git/git-$version.tar.gz",
+      before    => Exec["untar-git-source"],
+      require   => [Package[wget]]
   }
 
-  exec { "tar xzf git-$version.tar.gz":
+  exec { "untar-git-source":
+      command   => "/bin/tar xzf git-$version.tar.gz"
       cwd       => "/usr/local/src",
       creates   => "/usr/local/src/git-$version",
-      alias     => "untar-git-source",
       subscribe => File["download-git-tgz"],
-      before    => Exec["make install"]
+      before    => Exec["make-install-git"]
   }
 
-  exec { "make prefix=/usr all && make prefix=/usr install":
-      cwd     => "/usr/local/src/git-$version",
-      alias   => "make install",
-      creates => [ "/usr/bin/git" ],
-      require => [Exec["untar-git-source"],Package[gcc],Package[make],Package[gettext-devel],Package[expat-devel],Package[curl-devel],Package[openssl-devel],Package[zlib-devel]]
+  exec { "make-install-git":
+      cwd       => "/usr/local/src/git-$version",
+      command   => "/usr/bin/make prefix=/usr all && make prefix=/usr install",
+      creates   => [ "/usr/bin/git" ],
+      require   => [Exec["untar-git-source"],Package[gcc],Package[make],Package[gettext-devel],Package[expat-devel],Package[curl-devel],Package[openssl-devel],Package[zlib-devel]]
   }
 
 }
