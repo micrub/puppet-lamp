@@ -1,22 +1,9 @@
 class apache {
 
-  package {
-    httpd:
-    ensure => latest,
-    requires => Package[mod_ssl]
-  }
+  package { httpd: ensure => latest }
+  package { httpd-devel: ensure => latest }
+  package { mod_ssl: ensure => latest }
 
-  package {
-    httpd-devel:
-    ensure => latest,
-    requires => Package[http]
-  }
-
-  package {
-    mod_ssl:
-    ensure => latest,
-    requires => Package[http]
-  }
 
   service {
     httpd:
