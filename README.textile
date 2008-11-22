@@ -1,4 +1,4 @@
-h1. Puppet Manifests for a CentOS 5 Server
+h1. Wordpress Puppet Manifests for CentOS 5
 
 Intended for use with http://github.com/jestro/wordpress-capistrano
 
