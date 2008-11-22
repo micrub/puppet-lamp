@@ -1,11 +1,11 @@
 class git {
 
-  package { "zlib-devel": ensure => installed }
-  package { "openssl-devel": ensure => installed }
-  package { "curl-devel": ensure => installed }
-  package { "expat-devel": ensure => installed }
-  package { "gettext-devel": ensure => installed }
-  package { "wget": ensure => installed }
+  package { zlib-devel: ensure => latest }
+  package { openssl-devel: ensure => latest }
+  package { curl-devel: ensure => latest }
+  package { expat-devel: ensure => latest }
+  package { gettext-devel: ensure => latest }
+  package { wget: ensure => latest }
 
   $version = '1.6.0.4'
 
@@ -15,7 +15,8 @@ class git {
       cwd    => "/usr/local/src",
       source => "puppet://puppet/dist/packages/git-$version.tar.gz",
       alias  => "download-git-tgz",
-      before => Exec["untar-git-source"]
+      before => Exec["untar-git-source"],
+      require => [Package[wget],Package[gettext-devel],Package[expat-devel],Package[curl-devel],Package[openssl-devel],Package[zlib-devel]]
   }
 
   exec { "tar xzf git-$version.tar.gz":
