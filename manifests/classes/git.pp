@@ -13,10 +13,9 @@ class git {
 
   exec { "wget http://kernel.org/pub/software/scm/git/git-$version.tar.gz":
       cwd    => "/usr/local/src",
-      source => "puppet://puppet/dist/packages/git-$version.tar.gz",
       alias  => "download-git-tgz",
       before => Exec["untar-git-source"],
-      require => [Package[gcc],Package[make],Package[wget],Package[gettext-devel],Package[expat-devel],Package[curl-devel],Package[openssl-devel],Package[zlib-devel]]
+      require => [Package[wget]]
   }
 
   exec { "tar xzf git-$version.tar.gz":
@@ -31,7 +30,7 @@ class git {
       cwd     => "/usr/local/src/git-$version",
       alias   => "make install",
       creates => [ "/usr/bin/git" ],
-      require => [Exec["untar-git-source"]]
+      require => [Exec["untar-git-source"],Package[gcc],Package[make],Package[gettext-devel],Package[expat-devel],Package[curl-devel],Package[openssl-devel],Package[zlib-devel]]
   }
 
 }
