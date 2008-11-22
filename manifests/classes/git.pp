@@ -19,7 +19,7 @@ class git {
   }
 
   exec { "untar-git-source":
-      command   => "/bin/tar xzf git-$version.tar.gz"
+      command   => "/bin/tar xzf git-$version.tar.gz",
       cwd       => "/usr/local/src",
       creates   => "/usr/local/src/git-$version",
       subscribe => File["download-git-tgz"],
