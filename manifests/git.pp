@@ -16,7 +16,7 @@ class git {
       source => "puppet://puppet/dist/packages/git-$version.tar.gz",
       alias  => "download-git-tgz",
       before => Exec["untar-git-source"],
-      require => [Package[wget],Package[gettext-devel],Package[expat-devel],Package[curl-devel],Package[openssl-devel],Package[zlib-devel]]
+      require => [Package[gcc],Package[make],Package[wget],Package[gettext-devel],Package[expat-devel],Package[curl-devel],Package[openssl-devel],Package[zlib-devel]]
   }
 
   exec { "tar xzf git-$version.tar.gz":
