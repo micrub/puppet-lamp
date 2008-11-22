@@ -1,0 +1,59 @@
+h1. Puppet Manifests for a CentOS 5 Server
+
+Intended for use with http://github.com/jestro/wordpress-capistrano
+
+h2. Initial Setup
+
+<pre>
+<code>
+  # Login to your slice as root
+  ssh root@HOSTNAME
+
+  #Change your root password
+  passwd
+
+  #install ruby
+  yum install -y ruby ruby-devel ruby-libs ruby-rdoc ruby-ri
+
+  #install rubygems
+  cd /tmp
+  wget http://rubyforge.org/frs/download.php/45905/rubygems-1.3.1.tgz
+  tar xfz rubygems-*
+  cd rubygems-*
+  sudo ruby setup.rb
+  cd ..
+
+  #install puppet
+  sudo gem install facter puppet
+
+  #setup puppet dir
+  sudo mkdir /var/puppet
+
+  #download this repo to /etc/puppet
+
+  sudo puppet /etc/puppet/manifests/site.pp
+</code>
+</pre>
+
+h2. Todo:
+
+* Users
+* Groups
+* Sudoers
+* SSH Config / Keys
+* iptables
+
+<pre>
+<code>
+  iptables -A INPUT -i lo -j ACCEPT
+  iptables -A INPUT -i ! lo -d 127.0.0.0/8 -j REJECT
+  iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+  iptables -A OUTPUT -j ACCEPT
+  iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+  iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+  iptables -A INPUT -p tcp -m state --state NEW --dport 22 -j ACCEPT
+  iptables -A INPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT
+  iptables -A INPUT -j REJECT
+  iptables -A FORWARD -j REJECT
+</code>
+</pre>
