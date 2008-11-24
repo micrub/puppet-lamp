@@ -3,5 +3,7 @@ class wordpress {
           git,
           apache,
           mysql,
-          php
+          php,
+          users,
+          sudo
 }
