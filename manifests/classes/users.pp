@@ -1,5 +1,5 @@
-class user::virtual {
-  @user { "wordpress":
+class users {
+  user { "wordpress":
       ensure  => "present",
       uid     => "500",
       gid     => "500",
