@@ -1,8 +1,8 @@
 class apache {
 
-  package { httpd: ensure => latest }
-  package { httpd-devel: ensure => latest }
-  package { mod_ssl: ensure => latest }
+  package { httpd: ensure => installed }
+  package { httpd-devel: ensure => installed }
+  package { mod_ssl: ensure => installed }
 
 
   service {

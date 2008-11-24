@@ -1,11 +1,11 @@
 class git {
 
-  package { zlib-devel: ensure => latest }
-  package { openssl-devel: ensure => latest }
-  package { curl-devel: ensure => latest }
-  package { expat-devel: ensure => latest }
-  package { gettext-devel: ensure => latest }
-  package { wget: ensure => latest }
+  package { zlib-devel: ensure => installed }
+  package { openssl-devel: ensure => installed }
+  package { curl-devel: ensure => installed }
+  package { expat-devel: ensure => installed }
+  package { gettext-devel: ensure => installed }
+  package { wget: ensure => installed }
 
   $version = '1.6.0.4'
 
