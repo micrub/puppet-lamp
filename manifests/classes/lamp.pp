@@ -1,4 +1,4 @@
-class wordpress {
+class lamp {
   include build,
           git,
           apache,
