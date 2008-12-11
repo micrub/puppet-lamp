@@ -10,4 +10,12 @@ class mysql {
     subscribe => Package[mysql-server]
   }
 
+  file { "/etc/my.cnf":
+      owner   => root,
+      group   => root,
+      mode    => 660,
+      source  => "/etc/puppet/files/etc/my.cnf",
+      require => [ Package[mysql-server] ]
+  }
+
 }
