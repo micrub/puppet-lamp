@@ -34,7 +34,7 @@ class git {
   exec { "make-install-git":
       cwd       => "/usr/local/src/git-$version",
       path      => "/bin:/usr/bin",
-      command   => "make prefix=/usr all && make prefix=/usr install",
+      command   => "make clean && make prefix=/usr all && make prefix=/usr install",
       creates   => [ "/usr/bin/git" ],
       unless    => "git --version | grep '$version'",
       subscribe => Exec["untar-git-source"],
