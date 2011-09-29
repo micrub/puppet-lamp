@@ -1,2 +1,2 @@
-LAMP Puppet Manifests for CentOS 5/Ubuntu
+LAMP Puppet Manifests for Ubuntu/Debian
 

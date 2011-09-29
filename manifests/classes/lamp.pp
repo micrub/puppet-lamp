@@ -1,10 +1,6 @@
 class lamp {
-  include build,
-          ssh,
-          svn,
-          git,
+  include 
           apache,
-          mysql,
           php,
-          sudo
+          mysql,
 }

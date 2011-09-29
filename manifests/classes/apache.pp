@@ -1,23 +1,20 @@
 class apache {
 
-  package { httpd: ensure => installed }
-  package { httpd-devel: ensure => installed }
-  package { mod_ssl: ensure => installed }
-
+  package { 'apache2' : ensure => installed }
 
   service {
-    httpd:
+    'apache2' :
     enable    => true,
     ensure    => running,
-    subscribe => [Package[httpd], File["/etc/httpd/conf/httpd.conf"], Package[php], File["/etc/php.ini"]]
+    subscribe => [Package['apache2']]
   }
 
-  file { "/etc/httpd/conf/httpd.conf":
-      owner   => root,
-      group   => root,
-      mode    => 660,
-      source  => "/etc/puppet/files/etc/httpd/conf/httpd.conf",
-      require => [ Package[httpd] ]
-  }
+  #file { "/etc/httpd/conf/httpd.conf":
+  #    owner   => root,
+  #    group   => root,
+  #    mode    => 660,
+  #    source  => "/etc/puppet/files/etc/httpd/conf/httpd.conf",
+  #    require => [ Package[httpd] ]
+  #}
 
 }
