@@ -1,3 +1,2 @@
-h1. LAMP Puppet Manifests for CentOS 5
+LAMP Puppet Manifests for CentOS 5/Ubuntu
 
-Intended for use with http://github.com/jestro/wordpress-capistrano
