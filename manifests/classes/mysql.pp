@@ -3,7 +3,6 @@ class mysql {
 	package { "libapache2-mod-auth-mysql": 	ensure => installed }
 	package { "php5-mysql":			ensure=>installed }
 	package { "phpmyadmin":			ensure=>installed }
-  }
 
   #service {
   #  mysqld:
