@@ -1,9 +1,8 @@
 class mysql {
-  package { 	
-		mysql-server: 			ensure => installed ,
-  		libapache2-mod-auth-mysql: 	ensure => installed,
-		php5-mysql:			ensure=>installed,
-		phpmyadmin:			ensure=>installed,
+	package { "mysql-server" :		ensure => installed }
+	package { "libapache2-mod-auth-mysql": 	ensure => installed }
+	package { "php5-mysql":			ensure=>installed }
+	package { "phpmyadmin":			ensure=>installed }
   }
 
   #service {
