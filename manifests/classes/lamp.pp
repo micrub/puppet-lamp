@@ -1,6 +1,5 @@
 class lamp {
-  include 
-          apache,
-          php,
-          mysql,
+  	include apache
+	include php
+	include mysql
 }
