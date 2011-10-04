@@ -9,12 +9,17 @@ class apache {
     subscribe => [Package['apache2']]
   }
 
-  #file { "/etc/httpd/conf/httpd.conf":
-  #    owner   => root,
-  #    group   => root,
-  #    mode    => 660,
-  #    source  => "/etc/puppet/files/etc/httpd/conf/httpd.conf",
-  #    require => [ Package[httpd] ]
-  #}
-
+ file {"default virtualhost":
+    path    => "${apache::params::conf}/sites-available/default",
+    ensure  => present,
+    content => template("vhost.erb"),
+    require => Package["apache2"],
+    notify  => Exec["apache-graceful"],
+    mode    => 644,
+  }
+  exec { "apache-graceful":
+    command => undef,
+    refreshonly => true,
+    onlyif => undef,
+  }
 }
