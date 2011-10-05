@@ -1,4 +1,4 @@
-class apache::params {
+class apacheparams {
 
   $pkg = $operatingsystem ? {
     /RedHat|CentOS/ => 'httpd',
