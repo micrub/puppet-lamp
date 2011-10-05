@@ -10,7 +10,7 @@ class apache {
   }
 
  file {"default virtualhost":
-    path    => "${apache::params::conf}/sites-available/default",
+    path    => "${apacheparams::conf}/sites-available/default",
     ensure  => present,
     content => template("vhost.erb"),
     require => Package["apache2"],
