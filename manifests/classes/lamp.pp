@@ -5,7 +5,7 @@ class lamp {
       	  refreshonly => true;
       	}
 
-  	include apache-params
+  	include apacheparams
   	include apache
 	include php
 	include mysql
