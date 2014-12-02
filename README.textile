@@ -1,2 +1,0 @@
-LAMP Puppet Manifests for Ubuntu/Debian
-

@@ -1,25 +1,24 @@
 class apache {
-
-  package { 'apache2' : ensure => installed }
+  package { httpd: ensure => "latest" }
+  package { httpd-devel: ensure => installed }
+  package { mod_ssl: ensure => installed }
 
   service {
     'apache2' :
     enable    => true,
     ensure    => running,
-    subscribe => [Package['apache2']]
+    subscribe => [Package[httpd], 
+    			  File["/etc/httpd/conf/httpd.conf"], 
+    			  Package[php], 
+    			  File["/etc/php.ini"],
+    			  File["/etc/httpd/conf.d/moodle.conf"]]
   }
 
- file {"default virtualhost":
-    path    => "${apacheparams::conf}/sites-available/default",
-    ensure  => present,
-    content => template("../../templates/vhost.erb"),
-    require => Package["apache2"],
-    notify  => Exec["apache-graceful"],
-    mode    => 644,
-  }
-  exec { "apache-graceful":
-    command => undef,
-    refreshonly => true,
-    onlyif => undef,
+  file { "/etc/httpd/conf/httpd.conf":
+      owner   => root,
+      group   => root,
+      mode    => 660,
+      source  => "/vagrant/files/etc/httpd/conf/httpd.conf",
+      require => [ Package[httpd] ]
   }
 }

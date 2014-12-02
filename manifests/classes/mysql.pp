@@ -1,21 +1,20 @@
 class mysql {
+  $mysqlpackages = [ "mysql", "mysql-libs", "mysql-server" ]
+  package { $mysqlpackages: ensure => "latest" }
 
-  	user { "mysql":
-  	  ensure => present,
-  	  require => Package["mysql-server"],
-  	}
-	package { "mysql-server" :		ensure => installed }
-	package { "libapache2-mod-auth-mysql": 	ensure => installed }
-	package { "php5-mysql":			ensure=>installed }
-	package { "phpmyadmin":			ensure=>installed }
+  service {
+    mysqld:
+    enable    => true,
+    ensure    => running,
+    subscribe => Package["mysql-server"]
+  }
 
- 	service { "mysql":
- 	   ensure      => running,
- 	   enable      => true,
- 	   name        => $operatingsystem ? {
- 	     /RedHat|Fedora|CentOS/ => "mysqld",
- 	     default => "mysql",
- 	   },
- 	   require   => Package["mysql-server"],
- 	 }
+  file { "/etc/my.cnf":
+      owner   => root,
+      group   => root,
+      mode    => 660,
+      source  => "/vagrant/files/etc/my.cnf",
+      require => [ Package["mysql-server"] ],
+      notify  => Service["mysqld"],
+  }
 }
